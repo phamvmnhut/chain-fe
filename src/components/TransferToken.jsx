@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 
 import { ChainContext } from "context/ChainContext";
 import { Loader } from ".";
+import { chainApi } from "apis";
 
 const Input = ({ placeholder, type, name, value, handleChange }) => (
   <input
@@ -9,18 +10,37 @@ const Input = ({ placeholder, type, name, value, handleChange }) => (
     type={type}
     step="0.00025"
     value={value}
-    onChange={(e) => handleChange(e, name)}
+    onChange={(e) => handleChange(e.target.value)}
     className="my-2 w-full rounded-sm p-2 outline-none bg-transparent text-white border-none text-sm white-glassmorphism"
   />
 );
 
 export default function TransferToken() {
-  const { address, balance } = useContext(ChainContext);
+  const { address, balance, getBalance } = useContext(ChainContext);
 
   const [isLoading, setIsLoading] = useState(false);
 
-  function handleSubmit(e) {
+  const [addressTo, setAddressTo] = useState("");
+  function handleChangeAddressTo(value) {
+    setAddressTo(value);
+  }
+
+  const [amount, setAmount] = useState(1);
+  function handleChangeAmount(value) {
+    if (value > balance) {
+      alert("You don't have enough balance");
+      return;
+    }
+    setAmount(value);
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
+    setIsLoading(true);
+    chainApi.send(address, addressTo, amount).finally(() => {
+      setIsLoading(false);
+      getBalance();
+    });
   };
 
   return (
@@ -38,13 +58,15 @@ export default function TransferToken() {
               placeholder="Address get Token"
               name="addressGetToken"
               type="text"
-            // handleChange={handleChange}
+              value={addressTo}
+              handleChange={handleChangeAddressTo}
             />
             <Input
               placeholder="Investment money"
               name="investmentMoney"
               type="number"
-            // handleChange={handleChange}
+              value={amount}
+              handleChange={handleChangeAmount}
             />
 
             <div className="h-[1px] w-full bg-gray-400 my-2" />
@@ -57,7 +79,7 @@ export default function TransferToken() {
                 onClick={handleSubmit}
                 className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer"
               >
-                Confirm Transaction now
+                Confirm Transaction
               </button>
             )}
           </div>
