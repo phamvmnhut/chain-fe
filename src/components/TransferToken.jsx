@@ -45,7 +45,7 @@ export default function TransferToken() {
 
   return (
     <div className="flex w-full justify-center items-center">
-      <div className="flex mf:flex-row flex-col items-start justify-between md:p-20 py-12 px-4">
+      <div className="flex mf:flex-row flex-col items-start justify-between md:p-12 py-12 px-4">
         <div className="flex flex-col flex-1 items-center justify-start w-full mf:mt-0 mt-10">
           <div>
             <h3 className="text-white text-3xl text-center my-2 flex w-full justify-center items-center 2xl:px-20 ">
