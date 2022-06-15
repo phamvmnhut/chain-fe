@@ -34,7 +34,8 @@ const chainApi = {
                 {
                     "sendFrom": addressFrom,
                     "sendTo": addressTo,
-                    "amount": amount
+                    "amount": amount,
+                    "mine": true
                 }
             ]
         };

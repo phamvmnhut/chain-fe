@@ -37,7 +37,7 @@ export default function TransferToken() {
   async function handleSubmit(e) {
     e.preventDefault();
     setIsLoading(true);
-    chainApi.send(address, addressTo, amount).finally(() => {
+    chainApi.send(address, addressTo, parseInt(amount, 10)).finally(() => {
       setIsLoading(false);
       getBalance();
     });
